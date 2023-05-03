@@ -39,7 +39,7 @@ const onError = (error) => {
 			break
 		case 'EADDRINUSE':
 			console.error(bind + ' is already in use')
-			pricess.exit(1)
+			process.exit(1)
 			break
 		default:
 			throw error
