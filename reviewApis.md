@@ -2,6 +2,8 @@
 
 ### GET /api/reviews/get-all
 
+    no inputs
+
 ### GET /api/reviews/by-user-id
 
     params: id
