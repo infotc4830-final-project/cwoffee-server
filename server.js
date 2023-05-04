@@ -4,7 +4,6 @@ const http = require('http')
 const mongoose = require('mongoose')
 require('dotenv').config()
 
-console.log('uri: ', process.env.DB_URI)
 if (process.env.DB_URI) {
 	mongoose
 		.connect(process.env.DB_URI)

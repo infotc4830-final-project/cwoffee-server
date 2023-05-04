@@ -1,13 +1,12 @@
 const mongoose = require('mongoose')
 
 const reviewSchema = mongoose.Schema({
-	_id: { type: mongoose.ObjectId },
-	userId: { type: mongoose.ObjectId, required: false },
-	username: { type: String, required: false },
-	title: { type: String, required: false },
-	content: { type: String, required: false },
-	// itemOrdered: { type: String, required: false },
-	menuItemId: { type: mongoose.ObjectId, required: false },
+	_id: { type: mongoose.ObjectId, default: new mongoose.Types.ObjectId() },
+	userId: { type: mongoose.ObjectId, required: true },
+	username: { type: String, required: true },
+	title: { type: String, required: true },
+	content: { type: String, required: true },
+	menuItemId: { type: mongoose.ObjectId, required: true },
 })
 
 module.exports = mongoose.model('reviews', reviewSchema)

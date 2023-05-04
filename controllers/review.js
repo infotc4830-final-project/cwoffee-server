@@ -59,33 +59,75 @@ const handleReviewGetByItemId = async (req, res, key) => {
 }
 
 const handleReviewPost = async (req, res) => {
-	if (!req.body)
-		return res
-			.status(400)
-			.json({ message: 'invalid request or request body' })
-
 	try {
 		const Review = new ReviewModel({
-			userId: mockUser.userId,
-			username: mockUser.username,
+			userId: req.body.userId ? req.body.userId : mockUser.userId,
+			username: req.body.username ? req.body.username : mockUser.username,
 			title: req.body.title,
 			content: req.body.content,
-			menuItemId: mongoose.Types.ObjectId(),
+			menuItemId: req.body.menuItemId
+				? req.body.menuItemId
+				: new mongoose.Types.ObjectId(),
 		})
-		const saveResult = await Review.save()
-		console.log(saveResult)
-
-		return res.status(200).json({ ok: true, message: 'success' })
+		await Review.save()
+		return res.status(201).json({ ok: true, message: 'success' })
 	} catch (e) {
+		console.log('failed')
+		console.error(e)
 		return res
 			.status(500)
 			.json({ ok: false, message: 'failed test connection' })
 	}
 }
 
-const handleReviewPatch = async (req, res) => {}
+const handleReviewPatch = async (req, res) => {
+	try {
+		const _id = req.body._id
+		const userId = req.body.userId
+		const username = req.body.username
+		const title = req.body.title
+		const content = req.body.content
+		const menuItemId = req.body.menuItemId
 
-const handleReviewDelete = async (req, res) => {}
+		if (!_id || !userId || !username || !title || !content || !menuItemId) {
+			return res
+				.status(400)
+				.json({ ok: false, message: 'missing inputs' })
+		}
+
+		const review = await ReviewModel.findOne({ _id: _id })
+		console.log('review: ', review)
+
+		await ReviewModel.findByIdAndUpdate(_id, {
+			userId,
+			username,
+			title,
+			content,
+			menuItemId,
+		})
+		return res
+			.status(201)
+			.json({ ok: true, message: 'successfully updated' })
+	} catch (e) {
+		console.log(e)
+		return res.status(500).json({ ok: false, message: 'failed to update' })
+	}
+}
+
+const handleReviewDelete = async (req, res) => {
+	if (!req.body._id) {
+		return res.status(400).json({ ok: false, message: 'missing _id input' })
+	}
+	try {
+		await ReviewModel.findByIdAndDelete({ _id: req.body._id })
+		return res
+			.status(202)
+			.json({ ok: true, message: 'successfully deleted review' })
+	} catch (e) {
+		console.error(e)
+		return res.status(500).json({ ok: false, message: 'failed to delete' })
+	}
+}
 
 module.exports = {
 	handleReviewGetAll,
