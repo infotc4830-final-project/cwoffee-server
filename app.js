@@ -6,7 +6,12 @@ const menuRouter = require('./routes/menuRouter')
 const userRouter = require('./routes/userRouter')
 const TestController = require('./controllers/test')
 
-app.use(cors(), express.json())
+app.use(
+	cors({
+		origin: '*',
+	}),
+	express.json()
+)
 
 // app.use((req, res, next) => {
 // 	res.setHeader('Access-Control-Allow-Origin', '*')

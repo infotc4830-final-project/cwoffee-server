@@ -50,6 +50,19 @@ const handleUserLogin = async (req, res) => {
 const handleUserRegister = async (req, res) => {
 	const { username, password } = req.body
 
+	let existingUser
+	try {
+		existingUser = await UserModel.find({
+			username: username,
+		})
+	} catch (e) {
+		return res
+			.status(500)
+			.json({ ok: false, message: 'Error connecting to database' })
+	}
+	if (existingUser)
+		return res.json({ ok: false, message: 'username already exists' })
+
 	const newUser = UserModel({
 		username: username ? username : mockUser.username,
 		password: password ? password : mockUser.password,
