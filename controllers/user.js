@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken')
 const UserModel = require('../Models/userSchema')
 const { mockUser } = require('../mocks/mockUser')
+const bcrypt = require('bcrypt')
 
 const handleUserLogin = async (req, res) => {
 	const { username, password } = req.body
@@ -16,10 +17,17 @@ const handleUserLogin = async (req, res) => {
 			.json({ ok: false, message: 'Error connecting to database' })
 	}
 
-	if (!existingUser || existingUser.password != password)
+	if (!existingUser)
 		return res
 			.status(401)
 			.json({ ok: false, message: 'Incorrect Login Information' })
+
+	bcrypt.compare(password, existingUser.password, (err, result) => {
+		if (result == false)
+			return res
+				.status(401)
+				.json({ ok: false, message: 'Incorrect Login Information' })
+	})
 
 	let token
 	try {
@@ -52,7 +60,7 @@ const handleUserRegister = async (req, res) => {
 
 	let existingUser
 	try {
-		existingUser = await UserModel.find({
+		existingUser = await UserModel.findOne({
 			username: username,
 		})
 	} catch (e) {
@@ -60,13 +68,23 @@ const handleUserRegister = async (req, res) => {
 			.status(500)
 			.json({ ok: false, message: 'Error connecting to database' })
 	}
+
 	if (existingUser)
 		return res.json({ ok: false, message: 'username already exists' })
 
-	const newUser = UserModel({
-		username: username ? username : mockUser.username,
-		password: password ? password : mockUser.password,
+	// let newUser
+	const hashedPassword = await new Promise((resolve, reject) => {
+		bcrypt.hash(req.body.password, 10, (err, hash) => {
+			if (err) reject(err)
+			else resolve(hash)
+		})
 	})
+
+	const newUser = UserModel({
+		username: username,
+		password: hashedPassword,
+	})
+
 	try {
 		await newUser.save()
 	} catch (e) {
