@@ -1,0 +1,16 @@
+version: "3"
+services:
+    node-express-docker:
+      environment:
+          - NODE_ENV=development
+      build:
+          context: .
+          dockerfile: Dockerfile.dev
+      volumes:
+          - ./:/usr/cwoffee_server
+      container_name: node-express-docker
+      expose:
+          - "5001"
+      ports:
+          - "5001:5001"
+      command: npm run dev
