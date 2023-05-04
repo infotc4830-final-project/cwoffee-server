@@ -1,8 +1,8 @@
 const mongoose = require('mongoose')
 const mockUser = {
-	userId: new mongoose.Types.ObjectId(),
-	username: 'test_user',
-	password: 'suuuuper_secure_password',
+	_id: new mongoose.Types.ObjectId(),
+	username: 'username1',
+	password: 'password1',
 }
 
 module.exports = { mockUser }
