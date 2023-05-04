@@ -56,7 +56,9 @@ const handleReviewPost = async (req, res) => {
 				: new mongoose.Types.ObjectId(),
 		})
 		await Review.save()
-		return res.status(201).json({ ok: true, message: 'success' })
+		return res
+			.status(201)
+			.json({ ok: true, message: 'success', data: Review })
 	} catch (e) {
 		console.log('failed')
 		console.error(e)

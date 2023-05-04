@@ -3,8 +3,8 @@ const app = express()
 const cors = require('cors')
 const reviewRouter = require('./routes/reviewRouter')
 const menuRouter = require('./routes/menuRouter')
+const userRouter = require('./routes/userRouter')
 const TestController = require('./controllers/test')
-
 
 app.use(cors(), express.json())
 
@@ -26,5 +26,7 @@ app.get('/api/test', TestController.handleTest)
 app.use('/api/reviews', reviewRouter)
 
 app.use('/api/menu', menuRouter)
+
+app.use('/api/user', userRouter)
 
 module.exports = app
