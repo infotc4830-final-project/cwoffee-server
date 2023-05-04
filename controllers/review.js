@@ -17,19 +17,6 @@ const handleReviewGetAll = async (req, res) => {
 	}
 }
 
-const handleReviewGetByUserId = async (req, res) => {
-	try {
-		data = await ReviewModel.find({ userId: req.params.id })
-		return res
-			.status(200)
-			.json({ ok: true, message: 'success', data: data })
-	} catch (e) {
-		return res
-			.status(500)
-			.json({ ok: false, message: 'failed to query database' })
-	}
-}
-
 const handleReviewGetByReviewId = async (req, res) => {
 	try {
 		data = await ReviewModel.find({
@@ -61,7 +48,6 @@ const handleReviewGetByItemId = async (req, res, key) => {
 const handleReviewPost = async (req, res) => {
 	try {
 		const Review = new ReviewModel({
-			userId: req.body.userId ? req.body.userId : mockUser.userId,
 			username: req.body.username ? req.body.username : mockUser.username,
 			title: req.body.title,
 			content: req.body.content,
@@ -83,7 +69,6 @@ const handleReviewPost = async (req, res) => {
 const handleReviewPatch = async (req, res) => {
 	try {
 		const _id = req.body._id
-		const userId = req.body.userId
 		const username = req.body.username
 		const title = req.body.title
 		const content = req.body.content
@@ -99,7 +84,6 @@ const handleReviewPatch = async (req, res) => {
 		console.log('review: ', review)
 
 		await ReviewModel.findByIdAndUpdate(_id, {
-			userId,
 			username,
 			title,
 			content,
@@ -133,7 +117,6 @@ module.exports = {
 	handleReviewGetAll,
 	handleReviewGetByItemId,
 	handleReviewGetByReviewId,
-	handleReviewGetByUserId,
 	handleReviewPost,
 	handleReviewPatch,
 	handleReviewDelete,
