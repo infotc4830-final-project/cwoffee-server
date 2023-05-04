@@ -17,6 +17,11 @@ if (process.env.DB_URI) {
 	console.log('Missing DB_URI in .env')
 }
 
+if (!process.env.JWT_SECRET_KEY) {
+	console.error('Add the JWT_SECRET_KEY to your .env and restart the server')
+	process.exit(1)
+}
+
 const normalizePort = (val) => {
 	var port = parseInt(val, 10)
 
