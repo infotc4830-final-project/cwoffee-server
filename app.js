@@ -2,7 +2,9 @@ const express = require('express')
 const app = express()
 const cors = require('cors')
 const reviewRouter = require('./routes/reviewRouter')
+const menuRouter = require('./routes/menuRouter')
 const TestController = require('./controllers/test')
+
 
 app.use(cors(), express.json())
 
@@ -22,5 +24,7 @@ app.use(cors(), express.json())
 app.get('/api/test', TestController.handleTest)
 
 app.use('/api/reviews', reviewRouter)
+
+app.use('/api/menu', menuRouter)
 
 module.exports = app
