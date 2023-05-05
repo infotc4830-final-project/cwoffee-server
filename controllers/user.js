@@ -81,7 +81,7 @@ const handleUserRegister = async (req, res) => {
 			.json({ ok: false, message: 'Error connecting to database' })
 	}
 
-	if (existingUser)
+	if (existingUser && existingUser != {} && existingUser != [])
 		return res.json({ ok: false, message: 'username already exists' })
 
 	// let newUser
