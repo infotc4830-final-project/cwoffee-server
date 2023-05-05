@@ -19,9 +19,7 @@ const handleUserLogin = async (req, res) => {
 	console.log('existingUser: ', existingUser)
 	console.log('existingUser type: ', typeof existingUser)
 	if (!existingUser || existingUser == {} || existingUser == [])
-		return res
-			.status(401)
-			.json({ ok: false, message: 'Username not found' })
+		return res.json({ ok: false, message: 'Username not found' })
 
 	let samePassword
 	try {
@@ -41,9 +39,7 @@ const handleUserLogin = async (req, res) => {
 	}
 	console.log('samePassword: ', samePassword)
 	if (!samePassword)
-		return res
-			.status(401)
-			.json({ ok: false, message: 'Incorrect password' })
+		return res.json({ ok: false, message: 'Incorrect password' })
 
 	let token
 	try {

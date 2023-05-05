@@ -8,13 +8,13 @@ const handleMenuGetAllItems = async (req, res) => {
 		return res.status(500).json({ message: 'failed test connection' })
 	}
 
-	return res.status(200).json({ message: 'success', data: data })
+	return res.json({ message: 'success', data: data })
 }
 
 const handleMenuPostOneItem = async (req, res) => {
 
 	if (!req.body.name)
-		return res.status(400).json({ message: 'missing inputs' })
+		return res.json({ message: 'missing inputs' })
 
 	let data
 	try {
@@ -23,7 +23,7 @@ const handleMenuPostOneItem = async (req, res) => {
 		return res.status(500).json({ message: 'failed test connection' })
 	}
 
-	return res.status(200).json({ message: 'success', data: data })
+	return res..json({ message: 'success', data: data })
 }
 
 module.exports = {

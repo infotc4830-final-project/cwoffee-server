@@ -61,9 +61,7 @@ const handleReviewPatch = async (req, res) => {
 		const content = req.body.content
 
 		if (!_id || !username || !title || !content) {
-			return res
-				.status(400)
-				.json({ ok: false, message: 'missing inputs' })
+			return res.json({ ok: false, message: 'missing inputs' })
 		}
 
 		const review = await ReviewModel.findOne({ _id: _id })
@@ -85,7 +83,7 @@ const handleReviewPatch = async (req, res) => {
 
 const handleReviewDelete = async (req, res) => {
 	if (!req.body._id) {
-		return res.status(400).json({ ok: false, message: 'missing _id input' })
+		return res.json({ ok: false, message: 'missing _id input' })
 	}
 	try {
 		await ReviewModel.findByIdAndDelete({ _id: req.body._id })
