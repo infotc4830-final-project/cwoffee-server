@@ -42,9 +42,6 @@ const handleOrderGetByOrderId = async (req, res) => {
 const handleOrderPost = async (req, res) => {
 	try {
 		const Order = new OrderModel({
-			orderId: req.body.orderId
-				? req.body.orderId
-				: new mongoose.Types.ObjectId(),
 			items: req.body.items
 				? req.body.items
 				: new [mongoose.Types.ObjectId()](),
@@ -63,18 +60,18 @@ const handleOrderPost = async (req, res) => {
 
 const handleOrderPatch = async (req, res) => {
 	try {
-		const orderId = req.body.orderId
+		const _id = req.body.orderId
 		const items = req.body.items
 		const totalPrice = req.body.totalPrice
 
-		if (!orderId || !items || !totalPrice) {
+		if (!_id || !items || !totalPrice) {
 			return res.json({ ok: false, message: 'missing inputs' })
 		}
 
-		const order = await OrderModel.findOne({ orderId: orderId })
+		const order = await OrderModel.findOne({ orderId: _id })
 		console.log('order: ', order)
 
-		await OrderModel.findByIdAndUpdate(orderId, {
+		await OrderModel.findByIdAndUpdate(_id, {
 			items,
 			totalPrice,
 		})
@@ -90,7 +87,7 @@ const handleOrderDelete = async (req, res) => {
 		return res.json({ ok: false, message: 'missing orderId input' })
 	}
 	try {
-		await OrderModel.findByIdAndDelete({ orderId: req.body.orderId })
+		await OrderModel.findByIdAndDelete({ _id: req.body.orderId })
 		return res.json({ ok: true, message: 'successfully deleted order' })
 	} catch (e) {
 		console.error(e)
