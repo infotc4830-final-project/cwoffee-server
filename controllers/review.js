@@ -36,8 +36,6 @@ const handleReviewPost = async (req, res) => {
 	try {
 		const Review = new ReviewModel({
 			_id: new mongoose.Types.ObjectId(),
-			username: req.body.username ? req.body.username : mockUser.username,
-			title: req.body.title,
 			content: req.body.content,
 		})
 		await Review.save()
@@ -56,11 +54,9 @@ const handleReviewPost = async (req, res) => {
 const handleReviewPatch = async (req, res) => {
 	try {
 		const _id = req.body._id
-		const username = req.body.username
-		const title = req.body.title
 		const content = req.body.content
 
-		if (!_id || !username || !title || !content) {
+		if (!_id || !content) {
 			return res.json({ ok: false, message: 'missing inputs' })
 		}
 
@@ -68,8 +64,6 @@ const handleReviewPatch = async (req, res) => {
 		console.log('review: ', review)
 
 		await ReviewModel.findByIdAndUpdate(_id, {
-			username,
-			title,
 			content,
 		})
 		return res
