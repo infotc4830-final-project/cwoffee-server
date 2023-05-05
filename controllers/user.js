@@ -92,7 +92,7 @@ const handleUserRegister = async (req, res) => {
 		})
 	})
 
-	const newUser = UserModel({
+	const newUser = new UserModel({
 		username: username,
 		password: hashedPassword,
 	})
