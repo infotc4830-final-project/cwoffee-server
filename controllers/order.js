@@ -29,7 +29,7 @@ const handleOrderGetByUserId = async (req, res) => {
 const handleOrderGetByOrderId = async (req, res) => {
 	try {
 		data = await OrderModel.find({
-			orderId: req.params.orderId,
+			_id: req.params._id,
 		})
 		return res.json({ ok: true, message: 'success', data: data })
 	} catch (e) {
@@ -60,7 +60,7 @@ const handleOrderPost = async (req, res) => {
 
 const handleOrderPatch = async (req, res) => {
 	try {
-		const _id = req.body.orderId
+		const _id = req.body._id
 		const items = req.body.items
 		const totalPrice = req.body.totalPrice
 
@@ -68,7 +68,7 @@ const handleOrderPatch = async (req, res) => {
 			return res.json({ ok: false, message: 'missing inputs' })
 		}
 
-		const order = await OrderModel.findOne({ orderId: _id })
+		const order = await OrderModel.findOne({ _id: _id })
 		console.log('order: ', order)
 
 		await OrderModel.findByIdAndUpdate(_id, {
@@ -83,11 +83,11 @@ const handleOrderPatch = async (req, res) => {
 }
 
 const handleOrderDelete = async (req, res) => {
-	if (!req.body.orderId) {
+	if (!req.body._id) {
 		return res.json({ ok: false, message: 'missing orderId input' })
 	}
 	try {
-		await OrderModel.findByIdAndDelete({ _id: req.body.orderId })
+		await OrderModel.findByIdAndDelete({ _id: req.body._id })
 		return res.json({ ok: true, message: 'successfully deleted order' })
 	} catch (e) {
 		console.error(e)
