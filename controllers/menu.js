@@ -23,7 +23,7 @@ const handleMenuPostOneItem = async (req, res) => {
 		return res.status(500).json({ message: 'failed test connection' })
 	}
 
-	return res..json({ message: 'success', data: data })
+	return res.json({ message: 'success', data: data })
 }
 
 module.exports = {
