@@ -8,7 +8,7 @@ const handleUserLogin = async (req, res) => {
 
 	let existingUser
 	try {
-		existingUser = await UserModel.find({
+		existingUser = await UserModel.findOne({
 			username: username,
 		})
 	} catch (e) {
@@ -16,18 +16,30 @@ const handleUserLogin = async (req, res) => {
 			.status(500)
 			.json({ ok: false, message: 'Error connecting to database' })
 	}
-
-	if (!existingUser)
+	console.log('existingUser: ', existingUser)
+	console.log('existingUser type: ', typeof existingUser)
+	if (!existingUser || existingUser == {} || existingUser == [])
 		return res
 			.status(401)
 			.json({ ok: false, message: 'Username not found' })
 
-	const samePassword = await new Promise((resolve, reject) => {
-		bcrypt.compare(password, existingUser.password, (err, result) => {
-			if (err) reject(err)
-			resolve(result)
+	let samePassword
+	try {
+		samePassword = await new Promise((resolve, reject) => {
+			bcrypt.compare(password, existingUser.password, (err, result) => {
+				if (err) reject(err)
+				resolve(result)
+			})
 		})
-	})
+	} catch (e) {
+		console.log('bcrypt failure')
+		res.status(500).json({
+			ok: false,
+			message: 'failed to compare bcrypt passwords',
+		})
+		process.exit(1)
+	}
+	console.log('samePassword: ', samePassword)
 	if (!samePassword)
 		return res
 			.status(401)
@@ -79,7 +91,7 @@ const handleUserRegister = async (req, res) => {
 
 	// let newUser
 	const hashedPassword = await new Promise((resolve, reject) => {
-		bcrypt.hash(req.body.password, 10, (err, hash) => {
+		bcrypt.hash(password, 10, (err, hash) => {
 			if (err) reject(err)
 			else resolve(hash)
 		})
