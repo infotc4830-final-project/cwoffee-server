@@ -1,6 +1,5 @@
 const jwt = require('jsonwebtoken')
 const UserModel = require('../Models/userSchema')
-const { mockUser } = require('../mocks/mockUser')
 const bcrypt = require('bcrypt')
 
 const handleUserLogin = async (req, res) => {

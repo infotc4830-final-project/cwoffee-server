@@ -1,6 +1,5 @@
 const mongoose = require('mongoose')
 const OrderModel = require('../Models/orderSchema')
-const mockUser = require('../mocks/mockUser')
 
 const handleOrderGetAll = async (req, res) => {
 	let data
@@ -40,11 +39,13 @@ const handleOrderGetByOrderId = async (req, res) => {
 }
 
 const handleOrderPost = async (req, res) => {
+	if (!req.body.items || req.body.items == [])
+		return res.json({ ok: false, message: 'missing an items list' })
+
 	try {
 		const Order = new OrderModel({
-			items: req.body.items
-				? req.body.items
-				: new [mongoose.Types.ObjectId()](),
+			_id: new mongoose.Types.ObjectId(),
+			items: req.body.items ? req.body.items : [],
 			totalPrice: req.body.totalPrice,
 		})
 		await Order.save()
