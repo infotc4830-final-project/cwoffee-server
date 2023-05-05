@@ -4,6 +4,7 @@ const cors = require('cors')
 const reviewRouter = require('./routes/reviewRouter')
 const menuRouter = require('./routes/menuRouter')
 const userRouter = require('./routes/userRouter')
+const orderRouter = require('./routes/orderRouter')
 const TestController = require('./controllers/test')
 
 app.use(
@@ -33,5 +34,7 @@ app.use('/api/reviews', reviewRouter)
 app.use('/api/menu', menuRouter)
 
 app.use('/api/user', userRouter)
+
+app.use('/api/order', orderRouter)
 
 module.exports = app

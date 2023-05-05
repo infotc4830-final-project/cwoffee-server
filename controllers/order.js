@@ -45,7 +45,6 @@ const handleOrderPost = async (req, res) => {
 			orderId: req.body.orderId
 				? req.body.orderId
 				: new mongoose.Types.ObjectId(),
-			uid: req.body.uid ? req.body.uid : mockUser.userId,
 			items: req.body.items
 				? req.body.items
 				: new [mongoose.Types.ObjectId()](),
@@ -65,11 +64,10 @@ const handleOrderPost = async (req, res) => {
 const handleOrderPatch = async (req, res) => {
 	try {
 		const orderId = req.body.orderId
-		const uid = req.body.uid
 		const items = req.body.items
 		const totalPrice = req.body.totalPrice
 
-		if (!orderId || !uid || !items || !totalPrice) {
+		if (!orderId || !items || !totalPrice) {
 			return res.json({ ok: false, message: 'missing inputs' })
 		}
 
@@ -77,7 +75,6 @@ const handleOrderPatch = async (req, res) => {
 		console.log('order: ', order)
 
 		await OrderModel.findByIdAndUpdate(orderId, {
-			uid,
 			items,
 			totalPrice,
 		})
@@ -104,7 +101,6 @@ const handleOrderDelete = async (req, res) => {
 module.exports = {
 	handleOrderGetAll,
 	handleOrderGetByOrderId,
-	handleOrderGetByUserId,
 	handleOrderPost,
 	handleOrderPatch,
 	handleOrderDelete,
