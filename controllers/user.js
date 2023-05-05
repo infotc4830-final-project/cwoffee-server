@@ -20,7 +20,7 @@ const handleUserLogin = async (req, res) => {
 	if (!existingUser)
 		return res
 			.status(401)
-			.json({ ok: false, message: 'Incorrect Login Information' })
+			.json({ ok: false, message: 'Username not found' })
 
 	const samePassword = await new Promise((resolve, reject) => {
 		bcrypt.compare(password, existingUser.password, (err, result) => {
@@ -31,7 +31,7 @@ const handleUserLogin = async (req, res) => {
 	if (!samePassword)
 		return res
 			.status(401)
-			.json({ ok: false, message: 'Incorrect Login Information' })
+			.json({ ok: false, message: 'Incorrect password' })
 
 	let token
 	try {
